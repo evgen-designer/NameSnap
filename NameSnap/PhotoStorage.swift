@@ -37,4 +37,11 @@ class PhotoStorage {
         photos.sort()
         save()
     }
+    
+    func delete(_ photo: NamedPhoto) {
+        if let index = photos.firstIndex(of: photo) {
+            photos.remove(at: index)
+            save()
+        }
+    }
 }

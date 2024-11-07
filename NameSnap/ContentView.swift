@@ -17,18 +17,25 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            List(photoStorage.photos) { photo in
-                NavigationLink(destination: PhotoDetailView(photo: photo)) {
-                    HStack {
-                        if let image = UIImage(data: photo.photoData) {
-                            Image(uiImage: image)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 44, height: 44)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
+            List {
+                ForEach(photoStorage.photos) { photo in
+                    NavigationLink(destination: PhotoDetailView(photo: photo)) {
+                        HStack {
+                            if let image = UIImage(data: photo.photoData) {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 44, height: 44)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            
+                            Text(photo.name)
                         }
-                        
-                        Text(photo.name)
+                    }
+                }
+                .onDelete { indexSet in
+                    for index in indexSet {
+                        photoStorage.delete(photoStorage.photos[index])
                     }
                 }
             }
