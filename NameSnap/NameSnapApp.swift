@@ -2,7 +2,7 @@
 //  NameSnapApp.swift
 //  NameSnap
 //
-//  Created by Mac on 07/11/2024.
+//  Created by Eugene Evgen on 07/11/2024.
 //
 
 import SwiftUI
