@@ -19,3 +19,12 @@ struct PhotoDetailView: View {
         }
     }
 }
+
+#Preview {
+    NavigationStack {
+        PhotoDetailView(photo: NamedPhoto(
+            name: "Sample photo",
+            photoData: UIImage(systemName: "photo")?.pngData() ?? Data()
+        ))
+    }
+}
