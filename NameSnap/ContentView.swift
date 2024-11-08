@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import CoreLocation
 
 struct ContentView: View {
     @State private var photoStorage = PhotoStorage()
@@ -14,6 +15,7 @@ struct ContentView: View {
     @State private var showingNamePrompt = false
     @State private var newPhotoData: Data?
     @State private var newPhotoName = ""
+    let locationFetcher = LocationFetcher()
     
     var body: some View {
         NavigationStack {
@@ -46,6 +48,9 @@ struct ContentView: View {
                 }
             }
         }
+        .onAppear {
+            locationFetcher.start()
+        }
         .onChange(of: selectedItem) {
             Task {
                 if let data = try? await selectedItem?.loadTransferable(type: Data.self) {
@@ -60,7 +65,13 @@ struct ContentView: View {
             
             Button("Save") {
                 if let photoData = newPhotoData {
-                    let photo = NamedPhoto(name: newPhotoName, photoData: photoData)
+                    let location = locationFetcher.lastKnownLocation
+                    let photo = NamedPhoto(
+                        name: newPhotoName, 
+                        photoData: photoData,
+                        latitude: location?.latitude,
+                        longitude: location?.longitude
+                    )
                     photoStorage.add(photo)
                     newPhotoName = ""
                     newPhotoData = nil
